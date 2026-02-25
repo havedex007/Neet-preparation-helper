@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { NotesViewer } from './components/NotesViewer';
 import { AIDoubtSolver } from './components/AIDoubtSolver';
+import { Flashcards } from './components/Flashcards';
 import { NEET_NOTES } from './data/notes';
 import { cn } from './utils/cn';
 import { motion, AnimatePresence } from 'motion/react';
@@ -19,7 +20,9 @@ import {
   Award,
   BookOpen,
   MessageSquare,
-  Sparkles
+  Sparkles,
+  Menu,
+  X
 } from 'lucide-react';
 
 export default function App() {
@@ -27,10 +30,23 @@ export default function App() {
   const [activeClass, setActiveClass] = useState<'class11' | 'class12'>('class11');
   const [activeChapterId, setActiveChapterId] = useState<string | null>(null);
   const [showSolver, setShowSolver] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [bookmarks, setBookmarks] = useState<string[]>(() => {
+    const saved = localStorage.getItem('neet_bookmarks');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const toggleBookmark = (id: string) => {
+    setBookmarks(prev => {
+      const next = prev.includes(id) ? prev.filter(b => b !== id) : [...prev, id];
+      localStorage.setItem('neet_bookmarks', JSON.stringify(next));
+      return next;
+    });
+  };
 
   const currentSubject = NEET_NOTES[activeSubject];
   const activeChapter = activeChapterId 
-    ? [...currentSubject.class11, ...currentSubject.class12].find(c => c.id === activeChapterId)
+    ? Object.values(NEET_NOTES).flatMap(s => [...s.class11, ...s.class12]).find(c => c.id === activeChapterId)
     : null;
 
   return (
@@ -39,6 +55,9 @@ export default function App() {
         activeSubject={activeSubject}
         activeClass={activeClass}
         activeChapterId={activeChapterId}
+        bookmarks={bookmarks}
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
         onSelectSubject={setActiveSubject}
         onSelectClass={setActiveClass}
         onSelectChapter={setActiveChapterId}
@@ -47,31 +66,40 @@ export default function App() {
 
       <main className="flex-1 flex flex-col overflow-hidden relative">
         {/* Header */}
-        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 flex-shrink-0">
+        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8 flex-shrink-0">
           <div className="flex items-center gap-4 flex-1 max-w-xl">
-            <div className="relative w-full">
+            <button 
+              onClick={() => setIsSidebarOpen(true)}
+              className="lg:hidden p-2 text-slate-500 hover:bg-slate-50 rounded-lg transition-colors"
+            >
+              <Menu size={20} />
+            </button>
+            <div className="relative w-full hidden sm:block">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
               <input 
                 type="text" 
-                placeholder="Search topics, formulas, or questions..."
+                placeholder="Search topics..."
                 className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
               />
             </div>
+            <div className="sm:hidden font-bold text-slate-900 truncate">
+              {!activeChapterId ? 'Dashboard' : activeChapter?.title}
+            </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <button className="p-2 text-slate-500 hover:bg-slate-50 rounded-lg transition-colors relative">
               <Bell size={20} />
               <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white" />
             </button>
-            <div className="h-8 w-px bg-slate-200 mx-2" />
+            <div className="h-8 w-px bg-slate-200 mx-1 sm:mx-2" />
             <div className="flex items-center gap-3 pl-2">
-              <div className="text-right hidden sm:block">
+              <div className="text-right hidden md:block">
                 <p className="text-sm font-bold text-slate-900">Aman Sharma</p>
                 <p className="text-[10px] text-slate-500 font-medium uppercase tracking-wider">NEET Aspirant</p>
               </div>
-              <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 border-2 border-white shadow-sm">
-                <User size={20} />
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 border-2 border-white shadow-sm">
+                <User size={18} />
               </div>
             </div>
           </div>
@@ -191,27 +219,31 @@ export default function App() {
                       <h3 className="text-xl font-bold text-slate-900">Recent Doubts</h3>
                       <button className="text-sm font-bold text-indigo-600 hover:underline">History</button>
                     </div>
-                    <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-                      <div className="p-6 border-b border-slate-100 flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                          <MessageSquare size={20} />
+                    <div className="space-y-6">
+                      <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div className="p-6 border-b border-slate-100 flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                            <MessageSquare size={20} />
+                          </div>
+                          <div>
+                            <p className="text-sm font-bold text-slate-900">Ask AI anything</p>
+                            <p className="text-xs text-slate-500">Instant expert explanations</p>
+                          </div>
                         </div>
-                        <div>
-                          <p className="text-sm font-bold text-slate-900">Ask AI anything</p>
-                          <p className="text-xs text-slate-500">Instant expert explanations</p>
+                        <div className="p-6 space-y-4">
+                          <div className="p-4 bg-slate-50 rounded-2xl text-sm text-slate-600 italic">
+                            "What is the difference between Mitosis and Meiosis?"
+                          </div>
+                          <button 
+                            onClick={() => setShowSolver(true)}
+                            className="w-full py-3 bg-indigo-600 text-white rounded-xl font-bold shadow-md hover:bg-indigo-700 transition-all"
+                          >
+                            New Doubt
+                          </button>
                         </div>
                       </div>
-                      <div className="p-6 space-y-4">
-                        <div className="p-4 bg-slate-50 rounded-2xl text-sm text-slate-600 italic">
-                          "What is the difference between Mitosis and Meiosis?"
-                        </div>
-                        <button 
-                          onClick={() => setShowSolver(true)}
-                          className="w-full py-3 bg-indigo-600 text-white rounded-xl font-bold shadow-md hover:bg-indigo-700 transition-all"
-                        >
-                          New Doubt
-                        </button>
-                      </div>
+                      
+                      <Flashcards />
                     </div>
                   </section>
                 </div>
@@ -224,7 +256,13 @@ export default function App() {
                 exit={{ opacity: 0 }}
                 className="h-full"
               >
-                {activeChapter && <NotesViewer chapter={activeChapter} />}
+                {activeChapter && (
+                  <NotesViewer 
+                    chapter={activeChapter} 
+                    isBookmarked={bookmarks.includes(activeChapter.id)}
+                    onToggleBookmark={() => toggleBookmark(activeChapter.id)}
+                  />
+                )}
               </motion.div>
             )}
           </AnimatePresence>
@@ -249,12 +287,26 @@ export default function App() {
         <AnimatePresence>
           {showSolver && (
             <motion.div 
-              initial={{ opacity: 0, x: 400 }}
+              initial={{ opacity: 0, x: '100%' }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 400 }}
-              className="fixed top-20 right-8 bottom-32 w-[400px] z-40"
+              exit={{ opacity: 0, x: '100%' }}
+              className="fixed inset-y-0 right-0 w-full sm:w-[400px] z-[60] bg-white shadow-2xl flex flex-col"
             >
-              <AIDoubtSolver subject={activeSubject} />
+              <div className="flex items-center justify-between p-4 bg-indigo-600 text-white">
+                <div className="flex items-center gap-2">
+                  <Sparkles size={20} />
+                  <span className="font-bold">AI Doubt Solver</span>
+                </div>
+                <button 
+                  onClick={() => setShowSolver(false)}
+                  className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+              <div className="flex-1 overflow-hidden">
+                <AIDoubtSolver subject={activeSubject} />
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
