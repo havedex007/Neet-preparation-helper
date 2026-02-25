@@ -33,6 +33,24 @@ NEET Prep Pro is a full-featured web application designed to help students prepa
 - **Class 11**: Basic Concepts, Atomic Structure, Chemical Bonding, Thermodynamics, Equilibrium, Hydrocarbons, etc.
 - **Class 12**: Solutions, Electrochemistry, Kinetics, Coordination Compounds, Organic Chemistry (Aldehydes, Ketones, Amines), Biomolecules, etc.
 
+## 🚦 Getting Started
+
+### Prerequisites
+- Node.js (v18 or higher)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/neet-prep-pro.git
+   cd neet-prep-pro
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
 3. Set up environment variables:
    Create a `.env` file in the root directory and add your Gemini API key:
@@ -40,11 +58,14 @@ NEET Prep Pro is a full-featured web application designed to help students prepa
    GEMINI_API_KEY=your_api_key_here
    ```
 
-
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
 ## 📄 License
 
-License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🤝 Contributing
 
