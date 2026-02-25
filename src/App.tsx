@@ -117,22 +117,22 @@ export default function App() {
                 className="p-8 space-y-8"
               >
                 {/* Hero / Welcome */}
-                <div className="relative overflow-hidden rounded-[2rem] bg-indigo-600 p-10 text-white shadow-2xl shadow-indigo-200">
+                <div className="relative overflow-hidden rounded-2xl sm:rounded-[2rem] bg-indigo-600 p-6 sm:p-10 text-white shadow-2xl shadow-indigo-200">
                   <div className="relative z-10 max-w-2xl">
-                    <h2 className="text-4xl font-serif font-bold mb-4">Ready to ace your NEET exam?</h2>
-                    <p className="text-indigo-100 text-lg mb-8 leading-relaxed">
+                    <h2 className="text-2xl sm:text-4xl font-serif font-bold mb-3 sm:mb-4">Ready to ace your NEET exam?</h2>
+                    <p className="text-indigo-100 text-sm sm:text-lg mb-6 sm:mb-8 leading-relaxed">
                       Access comprehensive notes, solve your doubts instantly with AI, and track your progress daily.
                     </p>
-                    <div className="flex gap-4">
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                       <button 
                         onClick={() => setActiveChapterId(currentSubject[activeClass][0].id)}
-                        className="px-6 py-3 bg-white text-indigo-600 rounded-xl font-bold shadow-lg hover:bg-indigo-50 transition-all"
+                        className="px-6 py-3 bg-white text-indigo-600 rounded-xl font-bold shadow-lg hover:bg-indigo-50 transition-all text-sm sm:text-base"
                       >
                         Resume Learning
                       </button>
                       <button 
                         onClick={() => setShowSolver(true)}
-                        className="px-6 py-3 bg-indigo-500 text-white rounded-xl font-bold border border-indigo-400 hover:bg-indigo-400 transition-all flex items-center gap-2"
+                        className="px-6 py-3 bg-indigo-500 text-white rounded-xl font-bold border border-indigo-400 hover:bg-indigo-400 transition-all flex items-center justify-center gap-2 text-sm sm:text-base"
                       >
                         <Sparkles size={18} />
                         Ask AI Doubt
@@ -140,37 +140,37 @@ export default function App() {
                     </div>
                   </div>
                   {/* Decorative circles */}
-                  <div className="absolute top-[-20%] right-[-10%] w-96 h-96 bg-white/10 rounded-full blur-3xl" />
-                  <div className="absolute bottom-[-20%] right-[10%] w-64 h-64 bg-indigo-400/20 rounded-full blur-2xl" />
+                  <div className="absolute top-[-20%] right-[-10%] w-64 sm:w-96 h-64 sm:h-96 bg-white/10 rounded-full blur-3xl" />
+                  <div className="absolute bottom-[-20%] right-[10%] w-48 sm:w-64 h-48 sm:h-64 bg-indigo-400/20 rounded-full blur-2xl" />
                 </div>
 
                 {/* Stats Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                      <TrendingUp size={24} />
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6">
+                  <div className="bg-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-slate-200 shadow-sm flex items-center gap-3 sm:gap-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0">
+                      <TrendingUp size={20} />
                     </div>
-                    <div>
-                      <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Accuracy</p>
-                      <p className="text-2xl font-bold text-slate-900">84%</p>
-                    </div>
-                  </div>
-                  <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
-                      <Calendar size={24} />
-                    </div>
-                    <div>
-                      <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Study Streak</p>
-                      <p className="text-2xl font-bold text-slate-900">12 Days</p>
+                    <div className="min-w-0">
+                      <p className="text-[10px] sm:text-xs font-medium text-slate-500 uppercase tracking-wider truncate">Accuracy</p>
+                      <p className="text-lg sm:text-2xl font-bold text-slate-900">84%</p>
                     </div>
                   </div>
-                  <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-orange-50 text-orange-600 flex items-center justify-center">
-                      <Award size={24} />
+                  <div className="bg-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-slate-200 shadow-sm flex items-center gap-3 sm:gap-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
+                      <Calendar size={20} />
                     </div>
-                    <div>
-                      <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Rank</p>
-                      <p className="text-2xl font-bold text-slate-900">#1,240</p>
+                    <div className="min-w-0">
+                      <p className="text-[10px] sm:text-xs font-medium text-slate-500 uppercase tracking-wider truncate">Streak</p>
+                      <p className="text-lg sm:text-2xl font-bold text-slate-900">12d</p>
+                    </div>
+                  </div>
+                  <div className="bg-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-slate-200 shadow-sm flex items-center gap-3 sm:gap-4 col-span-2 md:col-span-1">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-orange-50 text-orange-600 flex items-center justify-center flex-shrink-0">
+                      <Award size={20} />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[10px] sm:text-xs font-medium text-slate-500 uppercase tracking-wider truncate">Rank</p>
+                      <p className="text-lg sm:text-2xl font-bold text-slate-900">#1,240</p>
                     </div>
                   </div>
                 </div>

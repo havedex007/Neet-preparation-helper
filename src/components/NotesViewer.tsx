@@ -25,22 +25,22 @@ export const NotesViewer: React.FC<NotesViewerProps> = ({
             <Book size={14} />
             <span>Study Notes</span>
           </div>
-          <h1 className="text-4xl font-serif font-bold text-slate-900 mb-4 leading-tight">
+          <h1 className="text-2xl sm:text-4xl font-serif font-bold text-slate-900 mb-4 leading-tight">
             {chapter.title}
           </h1>
 
-          <p className="text-slate-600 text-sm mb-6 italic leading-relaxed border-l-4 border-indigo-200 pl-4">
+          <p className="text-slate-600 text-xs sm:text-sm mb-6 italic leading-relaxed border-l-4 border-indigo-200 pl-4">
             {chapter.summary}
           </p>
           
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-            <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-slate-500 text-sm">
-              <div className="flex items-center gap-2">
-                <Clock size={16} />
+            <div className="flex flex-wrap items-center gap-3 sm:gap-6 text-slate-500 text-[10px] sm:text-sm">
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <Clock size={14} className="sm:w-4 sm:h-4" />
                 <span>15 min read</span>
               </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-emerald-500" />
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-500" />
                 <span>High Yield Topic</span>
               </div>
             </div>
@@ -115,8 +115,8 @@ export const NotesViewer: React.FC<NotesViewerProps> = ({
           </div>
         </div>
         
-        <div className="p-6 sm:p-12">
-          <div className="markdown-body prose prose-slate max-w-none text-sm sm:text-base">
+        <div className="p-4 sm:p-12">
+          <div className="markdown-body prose prose-slate max-w-none text-xs sm:text-base">
             {activeTab === 'notes' && (
               <Markdown>{chapter.content}</Markdown>
             )}

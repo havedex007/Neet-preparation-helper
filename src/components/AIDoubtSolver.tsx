@@ -41,18 +41,18 @@ export const AIDoubtSolver: React.FC<{ subject?: string }> = ({ subject }) => {
 
   return (
     <div className="flex flex-col h-full bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-      <div className="p-4 border-bottom border-slate-100 bg-slate-50 flex items-center justify-between">
+      <div className="p-3 sm:p-4 border-bottom border-slate-100 bg-slate-50 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white">
-            <Bot size={18} />
+          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white">
+            <Bot size={16} className="sm:w-[18px] sm:h-[18px]" />
           </div>
           <div>
-            <h3 className="font-semibold text-slate-900">AI Doubt Solver</h3>
-            <p className="text-xs text-slate-500">Expert NEET Tutor</p>
+            <h3 className="text-sm sm:text-base font-semibold text-slate-900">AI Doubt Solver</h3>
+            <p className="text-[10px] sm:text-xs text-slate-500">Expert NEET Tutor</p>
           </div>
         </div>
         {subject && (
-          <span className="text-xs font-medium px-2 py-1 bg-indigo-100 text-indigo-700 rounded-full uppercase tracking-wider">
+          <span className="text-[10px] font-medium px-2 py-0.5 bg-indigo-100 text-indigo-700 rounded-full uppercase tracking-wider">
             {subject}
           </span>
         )}
@@ -60,16 +60,16 @@ export const AIDoubtSolver: React.FC<{ subject?: string }> = ({ subject }) => {
 
       <div 
         ref={scrollRef}
-        className="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth"
+        className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4 scroll-smooth"
       >
         {messages.length === 0 && (
-          <div className="h-full flex flex-col items-center justify-center text-center p-8 space-y-4">
-            <div className="w-16 h-16 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600">
-              <Sparkles size={32} />
+          <div className="h-full flex flex-col items-center justify-center text-center p-6 sm:p-8 space-y-4">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600">
+              <Sparkles size={24} className="sm:w-8 sm:h-8" />
             </div>
             <div>
-              <h4 className="text-lg font-medium text-slate-900">Ask your doubts</h4>
-              <p className="text-sm text-slate-500 max-w-xs">
+              <h4 className="text-base sm:text-lg font-medium text-slate-900">Ask your doubts</h4>
+              <p className="text-xs sm:text-sm text-slate-500 max-w-xs">
                 Stuck on a concept? Ask me anything about Physics, Chemistry, or Biology.
               </p>
             </div>
@@ -77,12 +77,12 @@ export const AIDoubtSolver: React.FC<{ subject?: string }> = ({ subject }) => {
               {[
                 "Explain the Krebs cycle simply",
                 "What is Lenz's Law?",
-                "How to calculate molarity of a solution?"
+                "How to calculate molarity?"
               ].map((suggestion) => (
                 <button
                   key={suggestion}
                   onClick={() => setInput(suggestion)}
-                  className="text-left text-xs p-3 rounded-xl border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 transition-colors text-slate-600"
+                  className="text-left text-[10px] sm:text-xs p-2.5 sm:p-3 rounded-xl border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 transition-colors text-slate-600"
                 >
                   "{suggestion}"
                 </button>
@@ -95,18 +95,18 @@ export const AIDoubtSolver: React.FC<{ subject?: string }> = ({ subject }) => {
           <div
             key={i}
             className={cn(
-              "flex gap-3 max-w-[85%]",
+              "flex gap-2 sm:gap-3 max-w-[90%] sm:max-w-[85%]",
               msg.role === 'user' ? "ml-auto flex-row-reverse" : "mr-auto"
             )}
           >
             <div className={cn(
-              "w-8 h-8 rounded-lg flex-shrink-0 flex items-center justify-center",
+              "w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex-shrink-0 flex items-center justify-center",
               msg.role === 'user' ? "bg-slate-200 text-slate-600" : "bg-indigo-600 text-white"
             )}>
-              {msg.role === 'user' ? <User size={16} /> : <Bot size={16} />}
+              {msg.role === 'user' ? <User size={14} className="sm:w-4 sm:h-4" /> : <Bot size={14} className="sm:w-4 sm:h-4" />}
             </div>
             <div className={cn(
-              "p-3 rounded-2xl text-sm",
+              "p-2.5 sm:p-3 rounded-2xl text-xs sm:text-sm",
               msg.role === 'user' 
                 ? "bg-slate-100 text-slate-800 rounded-tr-none" 
                 : "bg-white border border-slate-200 text-slate-800 rounded-tl-none shadow-sm"
@@ -118,22 +118,22 @@ export const AIDoubtSolver: React.FC<{ subject?: string }> = ({ subject }) => {
           </div>
         ))}
         {isLoading && (
-          <div className="flex gap-3 mr-auto">
-            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white">
-              <Loader2 size={16} className="animate-spin" />
+          <div className="flex gap-2 sm:gap-3 mr-auto">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white">
+              <Loader2 size={14} className="animate-spin sm:w-4 sm:h-4" />
             </div>
-            <div className="p-3 rounded-2xl bg-white border border-slate-200 shadow-sm">
+            <div className="p-2.5 sm:p-3 rounded-2xl bg-white border border-slate-200 shadow-sm">
               <div className="flex gap-1">
-                <span className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce" />
-                <span className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce [animation-delay:0.2s]" />
-                <span className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce [animation-delay:0.4s]" />
+                <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-slate-300 rounded-full animate-bounce" />
+                <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-slate-300 rounded-full animate-bounce [animation-delay:0.2s]" />
+                <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-slate-300 rounded-full animate-bounce [animation-delay:0.4s]" />
               </div>
             </div>
           </div>
         )}
       </div>
 
-      <div className="p-4 border-t border-slate-100 bg-white">
+      <div className="p-3 sm:p-4 border-t border-slate-100 bg-white">
         <div className="relative flex items-center">
           <input
             type="text"
@@ -141,14 +141,14 @@ export const AIDoubtSolver: React.FC<{ subject?: string }> = ({ subject }) => {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
             placeholder="Ask a doubt..."
-            className="w-full pl-4 pr-12 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-sm"
+            className="w-full pl-4 pr-10 py-2.5 sm:py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-sm"
           />
           <button
             onClick={handleSend}
             disabled={!input.trim() || isLoading}
-            className="absolute right-2 p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:hover:bg-indigo-600 transition-colors"
+            className="absolute right-1.5 p-1.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:hover:bg-indigo-600 transition-colors"
           >
-            <Send size={18} />
+            <Send size={16} className="sm:w-[18px] sm:h-[18px]" />
           </button>
         </div>
       </div>
