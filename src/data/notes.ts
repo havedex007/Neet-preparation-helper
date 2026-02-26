@@ -5,6 +5,12 @@ export interface Chapter {
   content: string;
   questions?: string;
   formulas?: string;
+  pyqWeight?: number;
+  difficulty?: number;
+  totalQuestions?: number;
+  correctAnswers?: number;
+  wrongAnswers?: number;
+  lastRevised?: string;
 }
 
 export interface Subject {
@@ -21,6 +27,12 @@ export const NEET_NOTES: Record<string, Subject> = {
         id: "b11-1",
         title: "The Living World",
         summary: "Covers the fundamental characteristics of life, the rules of nomenclature, and the hierarchical classification of organisms using various taxonomical aids.",
+        pyqWeight: 4,
+        difficulty: 2,
+        totalQuestions: 50,
+        correctAnswers: 45,
+        wrongAnswers: 5,
+        lastRevised: "2026-02-20",
         content: `# The Living World
 
 ## Characteristics of Living Organisms
@@ -75,6 +87,12 @@ C) Index of plant species
         id: "b11-2",
         title: "Biological Classification",
         summary: "Explores the five-kingdom system proposed by Whittaker, detailing the characteristics of Monera, Protista, Fungi, Plantae, and Animalia, along with viruses and lichens.",
+        pyqWeight: 12,
+        difficulty: 3,
+        totalQuestions: 80,
+        correctAnswers: 60,
+        wrongAnswers: 20,
+        lastRevised: "2026-02-22",
         content: `# Biological Classification
 
 ## Five Kingdom System (R.H. Whittaker, 1969)
@@ -135,6 +153,12 @@ A) Mycoplasma B) Nostoc C) Euglena D) Amoeba
         id: "b11-3",
         title: "Plant Kingdom",
         summary: "Classifies plants into Algae, Bryophytes, Pteridophytes, Gymnosperms, and Angiosperms, highlighting their life cycles and reproductive structures.",
+        pyqWeight: 15,
+        difficulty: 4,
+        totalQuestions: 100,
+        correctAnswers: 50,
+        wrongAnswers: 50,
+        lastRevised: "2026-02-24",
         content: `# Plant Kingdom
 
 ## Algae
@@ -172,6 +196,12 @@ A) Mycoplasma B) Nostoc C) Euglena D) Amoeba
         id: "b11-4",
         title: "Animal Kingdom",
         summary: "Detailed classification of animals based on level of organization, symmetry, coelom, and specific phylum characteristics from Porifera to Chordata.",
+        pyqWeight: 22,
+        difficulty: 5,
+        totalQuestions: 150,
+        correctAnswers: 60,
+        wrongAnswers: 90,
+        lastRevised: "2026-02-15",
         content: `# Animal Kingdom
 
 ## Basis of Classification
@@ -206,6 +236,12 @@ A) Mycoplasma B) Nostoc C) Euglena D) Amoeba
         id: "b11-5",
         title: "Cell Cycle and Cell Division",
         summary: "Explains the phases of the cell cycle (Interphase and M-phase) and the processes of Mitosis and Meiosis with their significance.",
+        pyqWeight: 14,
+        difficulty: 3,
+        totalQuestions: 90,
+        correctAnswers: 80,
+        wrongAnswers: 10,
+        lastRevised: "2026-02-25",
         content: `# Cell Cycle and Cell Division
 
 ## Cell Cycle Phases

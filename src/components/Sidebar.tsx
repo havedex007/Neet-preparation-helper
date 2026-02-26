@@ -27,6 +27,8 @@ interface SidebarProps {
   onShowDashboard: () => void;
 }
 
+import { calculateMetrics, getPriorityColor } from '../services/intelligence';
+
 export const Sidebar: React.FC<SidebarProps> = ({
   activeSubject,
   activeClass,
@@ -181,26 +183,31 @@ export const Sidebar: React.FC<SidebarProps> = ({
               ))}
             </div>
           </div>
-
           {/* Chapters */}
           <div>
             <h3 className="text-[10px] font-bold text-slate-400 dark:text-dark-text-muted uppercase tracking-widest px-4 mb-3">Chapters</h3>
             <div className="space-y-1">
-              {currentSubject[activeClass].map((chapter) => (
-                <button
-                  key={chapter.id}
-                  onClick={() => handleChapterSelect(chapter.id)}
-                  className={cn(
-                    "w-full flex items-start gap-3 px-4 py-2 rounded-lg text-xs text-left transition-colors",
-                    activeChapterId === chapter.id 
-                      ? "bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-400 font-medium" 
-                      : "text-slate-600 dark:text-dark-text-muted hover:bg-slate-50 dark:hover:bg-dark-surface2"
-                  )}
-                >
-                  <BookOpen size={14} className="mt-0.5 flex-shrink-0 opacity-60" />
-                  <span className="truncate">{chapter.title}</span>
-                </button>
-              ))}
+              {currentSubject[activeClass].map((chapter) => {
+                const metrics = calculateMetrics(chapter);
+                return (
+                  <button
+                    key={chapter.id}
+                    onClick={() => handleChapterSelect(chapter.id)}
+                    className={cn(
+                      "w-full flex items-center justify-between px-4 py-2 rounded-lg text-xs text-left transition-colors group",
+                      activeChapterId === chapter.id 
+                        ? "bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-400 font-medium" 
+                        : "text-slate-600 dark:text-dark-text-muted hover:bg-slate-50 dark:hover:bg-dark-surface2"
+                    )}
+                  >
+                    <div className="flex items-center gap-3 truncate">
+                      <div className={cn("w-1.5 h-1.5 rounded-full flex-shrink-0", getPriorityColor(metrics.priorityLevel))} />
+                      <span className="truncate">{chapter.title}</span>
+                    </div>
+                    {activeChapterId === chapter.id && <ChevronRight size={12} className="flex-shrink-0" />}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>

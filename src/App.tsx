@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { NotesViewer } from './components/NotesViewer';
 import { AIDoubtSolver } from './components/AIDoubtSolver';
@@ -29,8 +29,11 @@ import {
   Zap,
   Target,
   BarChart3,
-  GraduationCap
+  GraduationCap,
+  AlertCircle
 } from 'lucide-react';
+
+import { calculateMetrics, getPriorityBadgeClass, getPriorityColor } from './services/intelligence';
 
 export default function App() {
   const [activeSubject, setActiveSubject] = useState('biology');
@@ -38,6 +41,16 @@ export default function App() {
   const [activeChapterId, setActiveChapterId] = useState<string | null>(null);
   const [showSolver, setShowSolver] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  // Helper to get all chapters sorted by priority
+  const allChapters = useMemo(() => {
+    return Object.values(NEET_NOTES)
+      .flatMap(s => [...s.class11, ...s.class12])
+      .map(c => ({ ...c, metrics: calculateMetrics(c) }))
+      .sort((a, b) => b.metrics.priorityScore - a.metrics.priorityScore);
+  }, []);
+
+  const highPriorityChapters = allChapters.filter(c => c.metrics.priorityLevel === 'High').slice(0, 3);
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem('neet_dark_mode');
     return saved ? JSON.parse(saved) : false;
@@ -199,6 +212,57 @@ export default function App() {
                     </div>
                   ))}
                 </div>
+
+                {/* High Priority Chapters */}
+                {highPriorityChapters.length > 0 && (
+                  <div>
+                    <div className="flex items-center justify-between mb-6">
+                      <h3 className="text-xl font-bold text-slate-900 dark:text-dark-text font-serif flex items-center gap-2">
+                        <AlertCircle className="text-red-500" size={20} />
+                        High Priority Revision
+                      </h3>
+                      <button 
+                        onClick={() => setActiveChapterId('all-notes')}
+                        className="text-sm font-bold text-indigo-600 dark:text-indigo-400 hover:underline"
+                      >
+                        View All
+                      </button>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {highPriorityChapters.map((chapter) => (
+                        <div 
+                          key={chapter.id}
+                          onClick={() => setActiveChapterId(chapter.id)}
+                          className="group bg-surface dark:bg-dark-surface border border-border dark:border-dark-border rounded-2xl p-6 cursor-pointer hover:border-red-500 dark:hover:border-red-500 transition-all hover:shadow-xl hover:shadow-red-500/5 hover:-translate-y-1 relative overflow-hidden"
+                        >
+                          <div className="flex justify-between items-start mb-4">
+                            <div className={cn(
+                              "px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-widest border",
+                              getPriorityBadgeClass(chapter.metrics.priorityLevel)
+                            )}>
+                              {chapter.metrics.priorityLevel}
+                            </div>
+                            <span className="text-xs font-bold text-slate-400">Score: {chapter.metrics.priorityScore}</span>
+                          </div>
+                          <h4 className="font-bold text-slate-900 dark:text-dark-text mb-1 group-hover:text-red-600 transition-colors">{chapter.title}</h4>
+                          <div className="flex items-center gap-4 mt-4">
+                            <div className="flex flex-col">
+                              <span className="text-[10px] text-slate-500 dark:text-dark-text-muted uppercase font-bold">Accuracy</span>
+                              <span className="text-sm font-bold text-slate-900 dark:text-dark-text">{chapter.metrics.accuracy.toFixed(0)}%</span>
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="text-[10px] text-slate-500 dark:text-dark-text-muted uppercase font-bold">PYQs</span>
+                              <span className="text-sm font-bold text-slate-900 dark:text-dark-text">{chapter.pyqWeight || 0}</span>
+                            </div>
+                          </div>
+                          <button className="w-full mt-6 py-2 bg-red-500 text-white rounded-xl text-xs font-bold hover:bg-red-600 transition-all active:scale-95">
+                            Revise Now
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {/* Quick Access Grid */}
                 <div>
@@ -380,28 +444,46 @@ export default function App() {
                       </div>
                       <div className="space-y-3">
                         <p className="text-xs font-bold text-slate-400 dark:text-dark-text-muted uppercase tracking-widest mb-2">Class 11</p>
-                        {subject.class11.slice(0, 3).map(ch => (
-                          <button 
-                            key={ch.id} 
-                            onClick={() => setActiveChapterId(ch.id)}
-                            className="w-full text-left p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-dark-surface2 text-sm text-slate-600 dark:text-dark-text-muted transition-colors flex items-center justify-between group"
-                          >
-                            <span className="truncate">{ch.title}</span>
-                            <ChevronRight size={14} className="opacity-0 group-hover:opacity-100 transition-all" />
-                          </button>
-                        ))}
+                        {subject.class11.slice(0, 3).map(ch => {
+                          const metrics = calculateMetrics(ch);
+                          return (
+                            <button 
+                              key={ch.id} 
+                              onClick={() => setActiveChapterId(ch.id)}
+                              className="w-full text-left p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-dark-surface2 text-sm text-slate-600 dark:text-dark-text-muted transition-colors flex items-center justify-between group"
+                            >
+                              <div className="flex items-center gap-3 truncate">
+                                <div className={cn("w-2 h-2 rounded-full flex-shrink-0", getPriorityColor(metrics.priorityLevel))} />
+                                <span className="truncate">{ch.title}</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span className="text-[10px] font-bold opacity-60">{metrics.accuracy.toFixed(0)}%</span>
+                                <ChevronRight size={14} className="opacity-0 group-hover:opacity-100 transition-all" />
+                              </div>
+                            </button>
+                          );
+                        })}
                         <div className="h-px bg-border dark:border-dark-border my-4" />
                         <p className="text-xs font-bold text-slate-400 dark:text-dark-text-muted uppercase tracking-widest mb-2">Class 12</p>
-                        {subject.class12.slice(0, 3).map(ch => (
-                          <button 
-                            key={ch.id} 
-                            onClick={() => setActiveChapterId(ch.id)}
-                            className="w-full text-left p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-dark-surface2 text-sm text-slate-600 dark:text-dark-text-muted transition-colors flex items-center justify-between group"
-                          >
-                            <span className="truncate">{ch.title}</span>
-                            <ChevronRight size={14} className="opacity-0 group-hover:opacity-100 transition-all" />
-                          </button>
-                        ))}
+                        {subject.class12.slice(0, 3).map(ch => {
+                          const metrics = calculateMetrics(ch);
+                          return (
+                            <button 
+                              key={ch.id} 
+                              onClick={() => setActiveChapterId(ch.id)}
+                              className="w-full text-left p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-dark-surface2 text-sm text-slate-600 dark:text-dark-text-muted transition-colors flex items-center justify-between group"
+                            >
+                              <div className="flex items-center gap-3 truncate">
+                                <div className={cn("w-2 h-2 rounded-full flex-shrink-0", getPriorityColor(metrics.priorityLevel))} />
+                                <span className="truncate">{ch.title}</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span className="text-[10px] font-bold opacity-60">{metrics.accuracy.toFixed(0)}%</span>
+                                <ChevronRight size={14} className="opacity-0 group-hover:opacity-100 transition-all" />
+                              </div>
+                            </button>
+                          );
+                        })}
                       </div>
                     </div>
                   ))}

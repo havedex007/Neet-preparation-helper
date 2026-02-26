@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Markdown from 'react-markdown';
 import { Chapter } from '../data/notes';
-import { Book, Clock, Share2, Bookmark, HelpCircle, FileText, Zap, Calculator } from 'lucide-react';
+import { Book, Clock, Share2, Bookmark, HelpCircle, FileText, Zap, Calculator, Target, BarChart3, AlertCircle } from 'lucide-react';
 import { cn } from '../utils/cn';
+import { calculateMetrics, getPriorityBadgeClass, markAsRevised } from '../services/intelligence';
 
 interface NotesViewerProps {
   chapter: Chapter;
@@ -16,18 +17,59 @@ export const NotesViewer: React.FC<NotesViewerProps> = ({
   onToggleBookmark 
 }) => {
   const [activeTab, setActiveTab] = useState<'notes' | 'questions' | 'formulas' | 'revision'>('notes');
+  const [revisionCount, setRevisionCount] = useState(0);
+
+  const metrics = useMemo(() => calculateMetrics(chapter), [chapter, revisionCount]);
+
+  const handleReviseNow = () => {
+    markAsRevised(chapter.id);
+    setRevisionCount(prev => prev + 1);
+  };
 
   return (
     <div className="max-w-4xl mx-auto py-4 sm:py-8 px-4 sm:px-6">
       <div className="bg-surface dark:bg-dark-surface rounded-2xl sm:rounded-3xl shadow-sm border border-border dark:border-dark-border overflow-hidden transition-colors duration-300">
         <div className="p-6 sm:p-8 border-b border-border dark:border-dark-border bg-slate-50/50 dark:bg-dark-surface2/30">
-          <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 text-xs font-bold uppercase tracking-widest mb-4">
-            <Book size={14} />
-            <span>Study Notes</span>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 text-xs font-bold uppercase tracking-widest">
+              <Book size={14} />
+              <span>Study Notes</span>
+            </div>
+            <div className={cn(
+              "px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border transition-colors",
+              getPriorityBadgeClass(metrics.priorityLevel)
+            )}>
+              {metrics.priorityLevel} Priority
+            </div>
           </div>
+          
           <h1 className="text-2xl sm:text-4xl font-serif font-bold text-slate-900 dark:text-dark-text mb-4 leading-tight">
             {chapter.title}
           </h1>
+
+          <div className="grid grid-cols-3 gap-4 mb-6">
+            <div className="bg-white dark:bg-dark-surface border border-border dark:border-dark-border p-3 rounded-xl">
+              <div className="flex items-center gap-2 text-slate-500 dark:text-dark-text-muted mb-1">
+                <Target size={14} />
+                <span className="text-[10px] font-bold uppercase tracking-wider">Accuracy</span>
+              </div>
+              <p className="text-lg font-bold text-slate-900 dark:text-dark-text">{metrics.accuracy.toFixed(1)}%</p>
+            </div>
+            <div className="bg-white dark:bg-dark-surface border border-border dark:border-dark-border p-3 rounded-xl">
+              <div className="flex items-center gap-2 text-slate-500 dark:text-dark-text-muted mb-1">
+                <BarChart3 size={14} />
+                <span className="text-[10px] font-bold uppercase tracking-wider">PYQ Weight</span>
+              </div>
+              <p className="text-lg font-bold text-slate-900 dark:text-dark-text">{chapter.pyqWeight || 0}</p>
+            </div>
+            <div className="bg-white dark:bg-dark-surface border border-border dark:border-dark-border p-3 rounded-xl">
+              <div className="flex items-center gap-2 text-slate-500 dark:text-dark-text-muted mb-1">
+                <AlertCircle size={14} />
+                <span className="text-[10px] font-bold uppercase tracking-wider">Difficulty</span>
+              </div>
+              <p className="text-lg font-bold text-slate-900 dark:text-dark-text">{chapter.difficulty || 1}/5</p>
+            </div>
+          </div>
 
           <p className="text-slate-600 dark:text-dark-text-muted text-xs sm:text-sm mb-6 italic leading-relaxed border-l-4 border-indigo-200 dark:border-indigo-900/50 pl-4">
             {chapter.summary}
@@ -46,6 +88,13 @@ export const NotesViewer: React.FC<NotesViewerProps> = ({
             </div>
             
             <div className="flex items-center gap-2">
+              <button 
+                onClick={handleReviseNow}
+                className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-xs font-bold hover:bg-indigo-700 transition-all active:scale-95 shadow-lg shadow-indigo-500/20"
+              >
+                <Zap size={14} />
+                Revise Now
+              </button>
               <button className="p-2 hover:bg-slate-100 dark:hover:bg-dark-surface2 rounded-lg transition-colors text-slate-500 dark:text-dark-text-muted">
                 <Share2 size={18} />
               </button>
