@@ -38,13 +38,13 @@ export const Flashcards: React.FC = () => {
   const currentCard = FLASHCARDS[currentIndex];
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden flex flex-col h-[300px]">
-      <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+    <div className="bg-surface dark:bg-dark-surface rounded-3xl border border-border dark:border-dark-border shadow-sm overflow-hidden flex flex-col h-[320px] transition-colors duration-300">
+      <div className="p-4 border-b border-border dark:border-dark-border flex items-center justify-between bg-slate-50/50 dark:bg-dark-surface2/30">
         <div className="flex items-center gap-2">
-          <Sparkles size={16} className="text-indigo-600" />
-          <h3 className="font-bold text-slate-900 text-sm">Quick Flashcards</h3>
+          <Sparkles size={16} className="text-indigo-600 dark:text-indigo-400" />
+          <h3 className="font-bold text-slate-900 dark:text-dark-text text-sm">Quick Flashcards</h3>
         </div>
-        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+        <span className="text-[10px] font-bold text-slate-400 dark:text-dark-text-muted uppercase tracking-widest">
           {currentIndex + 1} / {FLASHCARDS.length}
         </span>
       </div>
@@ -60,29 +60,29 @@ export const Flashcards: React.FC = () => {
             onClick={() => setIsFlipped(!isFlipped)}
             className="w-full h-full cursor-pointer preserve-3d relative"
           >
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4 backface-hidden bg-indigo-50 rounded-2xl border border-indigo-100">
-              <span className="text-[10px] font-bold text-indigo-400 uppercase mb-2">{currentCard.subject}</span>
-              <p className="text-slate-800 font-medium text-lg">{currentCard.question}</p>
-              <p className="text-[10px] text-indigo-400 mt-4 font-medium">Click to flip</p>
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 backface-hidden bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl border border-indigo-100 dark:border-indigo-900/30 shadow-inner">
+              <span className="text-[10px] font-bold text-indigo-400 dark:text-indigo-300 uppercase mb-3 tracking-widest">{currentCard.subject}</span>
+              <p className="text-slate-800 dark:text-dark-text font-bold text-lg sm:text-xl leading-tight">{currentCard.question}</p>
+              <p className="text-[10px] text-indigo-400 dark:text-indigo-300 mt-6 font-medium uppercase tracking-widest opacity-60">Click to reveal</p>
             </div>
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4 backface-hidden bg-indigo-600 rounded-2xl border border-indigo-500 text-white rotate-y-180">
-              <span className="text-[10px] font-bold text-indigo-200 uppercase mb-2">Answer</span>
-              <p className="text-white font-bold text-xl">{currentCard.answer}</p>
-              <p className="text-[10px] text-indigo-200 mt-4 font-medium">Click to flip back</p>
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 backface-hidden bg-indigo-600 dark:bg-indigo-500 rounded-2xl border border-indigo-500 dark:border-indigo-400 text-white rotate-y-180 shadow-xl shadow-indigo-500/20">
+              <span className="text-[10px] font-bold text-indigo-200 uppercase mb-3 tracking-widest">Answer</span>
+              <p className="text-white font-bold text-xl sm:text-2xl leading-tight">{currentCard.answer}</p>
+              <p className="text-[10px] text-indigo-200 mt-6 font-medium uppercase tracking-widest opacity-60">Click to flip back</p>
             </div>
           </motion.div>
         </AnimatePresence>
       </div>
 
-      <div className="p-4 border-t border-slate-100 flex items-center justify-between">
-        <button onClick={prevCard} className="p-2 hover:bg-slate-100 rounded-lg transition-colors text-slate-500">
+      <div className="p-4 border-t border-border dark:border-dark-border flex items-center justify-between bg-slate-50/30 dark:bg-dark-surface2/10">
+        <button onClick={prevCard} className="p-2 hover:bg-slate-100 dark:hover:bg-dark-surface2 rounded-xl transition-colors text-slate-500 dark:text-dark-text-muted">
           <ChevronLeft size={20} />
         </button>
-        <button onClick={() => setIsFlipped(!isFlipped)} className="flex items-center gap-2 text-xs font-bold text-indigo-600 hover:text-indigo-700">
+        <button onClick={() => setIsFlipped(!isFlipped)} className="flex items-center gap-2 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors">
           <RotateCcw size={14} />
           Flip Card
         </button>
-        <button onClick={nextCard} className="p-2 hover:bg-slate-100 rounded-lg transition-colors text-slate-500">
+        <button onClick={nextCard} className="p-2 hover:bg-slate-100 dark:hover:bg-dark-surface2 rounded-xl transition-colors text-slate-500 dark:text-dark-text-muted">
           <ChevronRight size={20} />
         </button>
       </div>

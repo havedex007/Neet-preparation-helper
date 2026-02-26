@@ -19,22 +19,22 @@ export const NotesViewer: React.FC<NotesViewerProps> = ({
 
   return (
     <div className="max-w-4xl mx-auto py-4 sm:py-8 px-4 sm:px-6">
-      <div className="bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
-        <div className="p-6 sm:p-8 border-b border-slate-100 bg-slate-50/50">
-          <div className="flex items-center gap-2 text-indigo-600 text-xs font-bold uppercase tracking-widest mb-4">
+      <div className="bg-surface dark:bg-dark-surface rounded-2xl sm:rounded-3xl shadow-sm border border-border dark:border-dark-border overflow-hidden transition-colors duration-300">
+        <div className="p-6 sm:p-8 border-b border-border dark:border-dark-border bg-slate-50/50 dark:bg-dark-surface2/30">
+          <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 text-xs font-bold uppercase tracking-widest mb-4">
             <Book size={14} />
             <span>Study Notes</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-serif font-bold text-slate-900 mb-4 leading-tight">
+          <h1 className="text-2xl sm:text-4xl font-serif font-bold text-slate-900 dark:text-dark-text mb-4 leading-tight">
             {chapter.title}
           </h1>
 
-          <p className="text-slate-600 text-xs sm:text-sm mb-6 italic leading-relaxed border-l-4 border-indigo-200 pl-4">
+          <p className="text-slate-600 dark:text-dark-text-muted text-xs sm:text-sm mb-6 italic leading-relaxed border-l-4 border-indigo-200 dark:border-indigo-900/50 pl-4">
             {chapter.summary}
           </p>
           
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-            <div className="flex flex-wrap items-center gap-3 sm:gap-6 text-slate-500 text-[10px] sm:text-sm">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-6 text-slate-500 dark:text-dark-text-muted text-[10px] sm:text-sm">
               <div className="flex items-center gap-1.5 sm:gap-2">
                 <Clock size={14} className="sm:w-4 sm:h-4" />
                 <span>15 min read</span>
@@ -46,29 +46,29 @@ export const NotesViewer: React.FC<NotesViewerProps> = ({
             </div>
             
             <div className="flex items-center gap-2">
-              <button className="p-2 hover:bg-slate-100 rounded-lg transition-colors text-slate-500">
+              <button className="p-2 hover:bg-slate-100 dark:hover:bg-dark-surface2 rounded-lg transition-colors text-slate-500 dark:text-dark-text-muted">
                 <Share2 size={18} />
               </button>
               <button 
                 onClick={onToggleBookmark}
                 className={cn(
                   "p-2 rounded-lg transition-all",
-                  isBookmarked ? "text-indigo-600 bg-indigo-50" : "text-slate-500 hover:bg-slate-100"
+                  isBookmarked ? "text-indigo-600 bg-indigo-50 dark:bg-indigo-900/30" : "text-slate-500 dark:text-dark-text-muted hover:bg-slate-100 dark:hover:bg-dark-surface2"
                 )}
               >
-                <Bookmark size={18} className={cn(isBookmarked && "fill-indigo-600")} />
+                <Bookmark size={18} className={cn(isBookmarked && "fill-indigo-600 dark:fill-indigo-400")} />
               </button>
             </div>
           </div>
 
-          <div className="flex flex-nowrap gap-1 p-1 bg-slate-100 rounded-xl w-full overflow-x-auto no-scrollbar">
+          <div className="flex flex-nowrap gap-1 p-1 bg-slate-100 dark:bg-dark-surface2 rounded-xl w-full overflow-x-auto no-scrollbar">
             <button
               onClick={() => setActiveTab('notes')}
               className={cn(
                 "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all flex-shrink-0",
                 activeTab === 'notes' 
-                  ? "bg-white text-indigo-600 shadow-sm" 
-                  : "text-slate-500 hover:text-slate-700"
+                  ? "bg-white dark:bg-dark-surface text-indigo-600 dark:text-indigo-400 shadow-sm" 
+                  : "text-slate-500 dark:text-dark-text-muted hover:text-slate-700 dark:hover:text-dark-text"
               )}
             >
               <FileText size={16} />
@@ -79,8 +79,8 @@ export const NotesViewer: React.FC<NotesViewerProps> = ({
               className={cn(
                 "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all flex-shrink-0",
                 activeTab === 'revision' 
-                  ? "bg-white text-indigo-600 shadow-sm" 
-                  : "text-slate-500 hover:text-slate-700"
+                  ? "bg-white dark:bg-dark-surface text-indigo-600 dark:text-indigo-400 shadow-sm" 
+                  : "text-slate-500 dark:text-dark-text-muted hover:text-slate-700 dark:hover:text-dark-text"
               )}
             >
               <Zap size={16} />
@@ -92,8 +92,8 @@ export const NotesViewer: React.FC<NotesViewerProps> = ({
                 className={cn(
                   "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all flex-shrink-0",
                   activeTab === 'formulas' 
-                    ? "bg-white text-indigo-600 shadow-sm" 
-                    : "text-slate-500 hover:text-slate-700"
+                    ? "bg-white dark:bg-dark-surface text-indigo-600 dark:text-indigo-400 shadow-sm" 
+                    : "text-slate-500 dark:text-dark-text-muted hover:text-slate-700 dark:hover:text-dark-text"
                 )}
               >
                 <Calculator size={16} />
@@ -105,8 +105,8 @@ export const NotesViewer: React.FC<NotesViewerProps> = ({
               className={cn(
                 "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all flex-shrink-0",
                 activeTab === 'questions' 
-                  ? "bg-white text-indigo-600 shadow-sm" 
-                  : "text-slate-500 hover:text-slate-700"
+                  ? "bg-white dark:bg-dark-surface text-indigo-600 dark:text-indigo-400 shadow-sm" 
+                  : "text-slate-500 dark:text-dark-text-muted hover:text-slate-700 dark:hover:text-dark-text"
               )}
             >
               <HelpCircle size={16} />
@@ -116,14 +116,14 @@ export const NotesViewer: React.FC<NotesViewerProps> = ({
         </div>
         
         <div className="p-4 sm:p-12">
-          <div className="markdown-body prose prose-slate max-w-none text-xs sm:text-base">
+          <div className="markdown-body prose prose-slate dark:prose-invert max-w-none text-xs sm:text-base">
             {activeTab === 'notes' && (
               <Markdown>{chapter.content}</Markdown>
             )}
             {activeTab === 'revision' && (
               <div className="space-y-6">
-                <h3 className="text-xl font-bold text-slate-900 mb-4">Key Takeaways</h3>
-                <div className="bg-indigo-50 border-l-4 border-indigo-500 p-6 rounded-r-2xl">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-dark-text mb-4">Key Takeaways</h3>
+                <div className="bg-indigo-50 dark:bg-indigo-900/10 border-l-4 border-indigo-500 p-6 rounded-r-2xl">
                   <ul className="space-y-3 list-none ml-0">
                     {chapter.content.split('\n').filter(line => line.startsWith('- **') || line.startsWith('> **')).map((point, idx) => (
                       <li key={idx} className="flex gap-3">
@@ -136,7 +136,7 @@ export const NotesViewer: React.FC<NotesViewerProps> = ({
               </div>
             )}
             {activeTab === 'formulas' && chapter.formulas && (
-              <div className="bg-slate-900 text-slate-100 p-8 rounded-3xl font-mono text-sm leading-relaxed overflow-x-auto">
+              <div className="bg-slate-900 dark:bg-dark-surface2 text-slate-100 p-8 rounded-3xl font-mono text-sm leading-relaxed overflow-x-auto">
                 <Markdown>{chapter.formulas}</Markdown>
               </div>
             )}
@@ -145,7 +145,7 @@ export const NotesViewer: React.FC<NotesViewerProps> = ({
                 {chapter.questions ? (
                   <Markdown>{chapter.questions}</Markdown>
                 ) : (
-                  <div className="text-center py-12 text-slate-500">
+                  <div className="text-center py-12 text-slate-500 dark:text-dark-text-muted">
                     <HelpCircle size={48} className="mx-auto mb-4 opacity-20" />
                     <p>Practice questions for this chapter are coming soon!</p>
                   </div>
@@ -155,15 +155,15 @@ export const NotesViewer: React.FC<NotesViewerProps> = ({
           </div>
         </div>
         
-        <div className="p-8 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
-          <div className="text-sm text-slate-500">
+        <div className="p-8 bg-slate-50 dark:bg-dark-surface2/30 border-t border-border dark:border-dark-border flex items-center justify-between">
+          <div className="text-sm text-slate-500 dark:text-dark-text-muted">
             Was this helpful?
           </div>
           <div className="flex gap-2">
-            <button className="px-4 py-2 rounded-lg border border-slate-200 bg-white text-sm font-medium hover:bg-slate-50 transition-colors">
+            <button className="px-4 py-2 rounded-lg border border-border dark:border-dark-border bg-surface dark:bg-dark-surface text-sm font-medium hover:bg-slate-50 dark:hover:bg-dark-surface2 transition-colors dark:text-dark-text">
               Yes, thanks!
             </button>
-            <button className="px-4 py-2 rounded-lg border border-slate-200 bg-white text-sm font-medium hover:bg-slate-50 transition-colors">
+            <button className="px-4 py-2 rounded-lg border border-border dark:border-dark-border bg-surface dark:bg-dark-surface text-sm font-medium hover:bg-slate-50 dark:hover:bg-dark-surface2 transition-colors dark:text-dark-text">
               Not really
             </button>
           </div>

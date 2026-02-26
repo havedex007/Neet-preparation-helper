@@ -40,40 +40,23 @@ export const AIDoubtSolver: React.FC<{ subject?: string }> = ({ subject }) => {
   };
 
   return (
-    <div className="flex flex-col h-full bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-      <div className="p-3 sm:p-4 border-bottom border-slate-100 bg-slate-50 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white">
-            <Bot size={16} className="sm:w-[18px] sm:h-[18px]" />
-          </div>
-          <div>
-            <h3 className="text-sm sm:text-base font-semibold text-slate-900">AI Doubt Solver</h3>
-            <p className="text-[10px] sm:text-xs text-slate-500">Expert NEET Tutor</p>
-          </div>
-        </div>
-        {subject && (
-          <span className="text-[10px] font-medium px-2 py-0.5 bg-indigo-100 text-indigo-700 rounded-full uppercase tracking-wider">
-            {subject}
-          </span>
-        )}
-      </div>
-
+    <div className="flex flex-col h-full bg-surface dark:bg-dark-surface overflow-hidden transition-colors duration-300">
       <div 
         ref={scrollRef}
-        className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4 scroll-smooth"
+        className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 sm:space-y-6 scroll-smooth no-scrollbar"
       >
         {messages.length === 0 && (
-          <div className="h-full flex flex-col items-center justify-center text-center p-6 sm:p-8 space-y-4">
-            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600">
-              <Sparkles size={24} className="sm:w-8 sm:h-8" />
+          <div className="h-full flex flex-col items-center justify-center text-center p-6 sm:p-8 space-y-6">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-[2rem] bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shadow-inner">
+              <Sparkles size={32} className="sm:w-10 sm:h-10" />
             </div>
-            <div>
-              <h4 className="text-base sm:text-lg font-medium text-slate-900">Ask your doubts</h4>
-              <p className="text-xs sm:text-sm text-slate-500 max-w-xs">
+            <div className="space-y-2">
+              <h4 className="text-xl sm:text-2xl font-serif font-bold text-slate-900 dark:text-dark-text">Ask your doubts</h4>
+              <p className="text-sm text-slate-500 dark:text-dark-text-muted max-w-xs mx-auto">
                 Stuck on a concept? Ask me anything about Physics, Chemistry, or Biology.
               </p>
             </div>
-            <div className="grid grid-cols-1 gap-2 w-full max-w-sm">
+            <div className="grid grid-cols-1 gap-3 w-full max-w-sm">
               {[
                 "Explain the Krebs cycle simply",
                 "What is Lenz's Law?",
@@ -82,9 +65,11 @@ export const AIDoubtSolver: React.FC<{ subject?: string }> = ({ subject }) => {
                 <button
                   key={suggestion}
                   onClick={() => setInput(suggestion)}
-                  className="text-left text-[10px] sm:text-xs p-2.5 sm:p-3 rounded-xl border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 transition-colors text-slate-600"
+                  className="text-left text-xs p-4 rounded-2xl border border-border dark:border-dark-border hover:border-indigo-500 dark:hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-dark-surface2 transition-all text-slate-600 dark:text-dark-text-muted group"
                 >
-                  "{suggestion}"
+                  <span className="opacity-60 group-hover:opacity-100 transition-opacity">"</span>
+                  {suggestion}
+                  <span className="opacity-60 group-hover:opacity-100 transition-opacity">"</span>
                 </button>
               ))}
             </div>
@@ -95,60 +80,60 @@ export const AIDoubtSolver: React.FC<{ subject?: string }> = ({ subject }) => {
           <div
             key={i}
             className={cn(
-              "flex gap-2 sm:gap-3 max-w-[90%] sm:max-w-[85%]",
+              "flex gap-3 sm:gap-4 max-w-[90%] sm:max-w-[85%]",
               msg.role === 'user' ? "ml-auto flex-row-reverse" : "mr-auto"
             )}
           >
             <div className={cn(
-              "w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex-shrink-0 flex items-center justify-center",
-              msg.role === 'user' ? "bg-slate-200 text-slate-600" : "bg-indigo-600 text-white"
+              "w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex-shrink-0 flex items-center justify-center shadow-sm",
+              msg.role === 'user' ? "bg-slate-100 dark:bg-dark-surface2 text-slate-600 dark:text-dark-text-muted" : "bg-indigo-600 text-white"
             )}>
-              {msg.role === 'user' ? <User size={14} className="sm:w-4 sm:h-4" /> : <Bot size={14} className="sm:w-4 sm:h-4" />}
+              {msg.role === 'user' ? <User size={16} /> : <Bot size={16} />}
             </div>
             <div className={cn(
-              "p-2.5 sm:p-3 rounded-2xl text-xs sm:text-sm",
+              "p-4 sm:p-5 rounded-2xl text-sm sm:text-base leading-relaxed",
               msg.role === 'user' 
-                ? "bg-slate-100 text-slate-800 rounded-tr-none" 
-                : "bg-white border border-slate-200 text-slate-800 rounded-tl-none shadow-sm"
+                ? "bg-indigo-600 text-white rounded-tr-none shadow-lg shadow-indigo-500/10" 
+                : "bg-white dark:bg-dark-surface2 border border-border dark:border-dark-border text-slate-800 dark:text-dark-text rounded-tl-none shadow-sm"
             )}>
-              <div className="markdown-body">
+              <div className={cn("markdown-body", msg.role === 'user' && "text-white")}>
                 <Markdown>{msg.content}</Markdown>
               </div>
             </div>
           </div>
         ))}
         {isLoading && (
-          <div className="flex gap-2 sm:gap-3 mr-auto">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white">
-              <Loader2 size={14} className="animate-spin sm:w-4 sm:h-4" />
+          <div className="flex gap-3 sm:gap-4 mr-auto">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-sm">
+              <Loader2 size={16} className="animate-spin" />
             </div>
-            <div className="p-2.5 sm:p-3 rounded-2xl bg-white border border-slate-200 shadow-sm">
-              <div className="flex gap-1">
-                <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-slate-300 rounded-full animate-bounce" />
-                <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-slate-300 rounded-full animate-bounce [animation-delay:0.2s]" />
-                <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-slate-300 rounded-full animate-bounce [animation-delay:0.4s]" />
+            <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-dark-surface2 border border-border dark:border-dark-border shadow-sm">
+              <div className="flex gap-1.5">
+                <span className="w-1.5 h-1.5 bg-slate-300 dark:bg-slate-600 rounded-full animate-bounce" />
+                <span className="w-1.5 h-1.5 bg-slate-300 dark:bg-slate-600 rounded-full animate-bounce [animation-delay:0.2s]" />
+                <span className="w-1.5 h-1.5 bg-slate-300 dark:bg-slate-600 rounded-full animate-bounce [animation-delay:0.4s]" />
               </div>
             </div>
           </div>
         )}
       </div>
 
-      <div className="p-3 sm:p-4 border-t border-slate-100 bg-white">
-        <div className="relative flex items-center">
+      <div className="p-4 sm:p-6 border-t border-border dark:border-dark-border bg-surface dark:bg-dark-surface transition-colors duration-300">
+        <div className="relative flex items-center max-w-3xl mx-auto w-full">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
             placeholder="Ask a doubt..."
-            className="w-full pl-4 pr-10 py-2.5 sm:py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-sm"
+            className="w-full pl-6 pr-14 py-4 bg-slate-50 dark:bg-dark-surface2 border border-border dark:border-dark-border rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-sm sm:text-base dark:text-dark-text"
           />
           <button
             onClick={handleSend}
             disabled={!input.trim() || isLoading}
-            className="absolute right-1.5 p-1.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:hover:bg-indigo-600 transition-colors"
+            className="absolute right-2 p-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 disabled:opacity-50 disabled:hover:bg-indigo-600 transition-all active:scale-95 shadow-lg shadow-indigo-500/20"
           >
-            <Send size={16} className="sm:w-[18px] sm:h-[18px]" />
+            <Send size={20} />
           </button>
         </div>
       </div>
